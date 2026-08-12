@@ -65,12 +65,12 @@ stages:
         archiveFile: '$(Build.ArtifactStagingDirectory)/Web.zip'
         replaceExistingArchive: true
 
-    - task: PublishBuildArtifacts@1
+    - task: PublishPipelineArtifact@1
       displayName: Publish CI Artifacts
       inputs:
-        pathToPublish: '$(Build.ArtifactStagingDirectory)/Web.zip'
-        artifactName: 'eshoponweb-ci'
-        publishLocation: 'Container'
+        targetPath: '$(Build.ArtifactStagingDirectory)/Web.zip'
+        artifact: 'eshoponweb-ci'
+        publishLocation: 'pipeline'
 
 # ─────────────────────────────────────────────
 # STAGE 2 — DEPLOY TO AZURE WEB APP (CD)
@@ -89,12 +89,10 @@ stages:
       artifact: eshoponweb-ci
       displayName: Download CI Artifacts
 
-    - task: AzureRmWebAppDeployment@4
+    - task: AzureWebApp@1
       displayName: Publish Website to WebApp
       inputs:
-        ConnectionType: 'AzureRM'
         azureSubscription: '$(azureserviceconnection)'
-        appType: 'webApp'
-        WebAppName: '$(webappname)'
-        packageForLinux: '$(Pipeline.Workspace)/eshoponweb-ci/Web.zip'
-        removeAdditionalFilesFlag: true
+        appType: 'webAppLinux'
+        appName: '$(webappname)'
+        package: '$(Pipeline.Workspace)/eshoponweb-ci/Web.zip'
