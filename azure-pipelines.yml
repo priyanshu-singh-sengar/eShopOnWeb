@@ -52,7 +52,8 @@ stages:
       displayName: Publish
       inputs:
         command: 'publish'
-        publishWebProjects: true
+        publishWebProjects: false
+        projects: 'src/Web/Web.csproj'
         arguments: '--configuration Release --output $(Build.ArtifactStagingDirectory)/Website'
 
     - task: ArchiveFiles@2
@@ -61,13 +62,13 @@ stages:
         rootFolderOrFile: '$(Build.ArtifactStagingDirectory)/Website'
         includeRootFolder: false
         archiveType: 'zip'
-        archiveFile: '$(Build.ArtifactStagingDirectory)/Website/Web.zip'
+        archiveFile: '$(Build.ArtifactStagingDirectory)/Web.zip'
         replaceExistingArchive: true
 
     - task: PublishBuildArtifacts@1
       displayName: Publish CI Artifacts
       inputs:
-        pathToPublish: '$(Build.ArtifactStagingDirectory)/Website'
+        pathToPublish: '$(Build.ArtifactStagingDirectory)/Web.zip'
         artifactName: 'eshoponweb-ci'
         publishLocation: 'Container'
 
