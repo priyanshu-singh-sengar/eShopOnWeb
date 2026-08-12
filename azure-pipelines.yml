@@ -97,3 +97,4 @@ stages:
         appType: 'webApp'
         WebAppName: '$(webappname)'
         packageForLinux: '$(Pipeline.Workspace)/eshoponweb-ci/Web.zip'
+        removeAdditionalFilesFlag: true
